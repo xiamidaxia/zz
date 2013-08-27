@@ -31,7 +31,8 @@ define(function (require, exports) {
                 className: "",
                 append: null,                   //jquery对象, 添加到对话框body上
                 appendTo: document.body,        //要添加到的父类对象
-                title: "对话框", hasMask: true,                  //是否开启遮盖层
+                title: "对话框",
+                hasMask: true,                  //是否开启遮盖层
                 hasTitle: true,
                 hasClose: true,
                 hasFoot: true,
@@ -52,7 +53,7 @@ define(function (require, exports) {
                         this.close()
                     }
                 },
-                footBtns: {}                //例：{"close":"关闭","submit":"提交"} 和actions对应
+                footBtns: {"close":"关闭"}                //例：{"close":"关闭","submit":"提交"} 和actions对应
             },
             TMPL: '<div class="ui-dialog pr ${className}">' +
                       '{{if hasClose}}' +
