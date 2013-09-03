@@ -14,7 +14,7 @@ var types = require('zz/utils/types')
     ,forEach = objs.forEach
     ,typeOf = objs.typeOf
     ,has = objs.has
-    ,isDebug = require('common/utils/global').get("DEBUG")
+    ,isDebug = GLOBAL.debug || GLOBAL.DEBUG
 var asserts = {}
 /*
  * 断言函数参数的类型
