@@ -60,6 +60,7 @@ define(function (require, exports) {
             },
             _bindEvent: function() {
                 var that = this
+                //注册点击空白关闭事件
                 if(this._opts.blankToClose) {
                     $(document.body).on('click.panel', function(){
                         that.close()
@@ -74,19 +75,23 @@ define(function (require, exports) {
                 return this
             },
             _unBindEvent: function() {
+                //取消点击空白关闭事件
                 if(this._opts.blankToClose) {
                     $(document.body).off('click.panel')
                     this.$target.off('click.panel')
                 }
+                //取消actionMap
                 this.$target.unActionMap()
                 return this
             },
             open: function() {
                 //console.log('panel open')
                 if (!this.$target) this._create()
+                //添加到body或者指定的节点
                 this.$target
                     .appendTo(this._opts.appendTo)
                     .show()
+                //绑定事件
                 this._bindEvent()
                 this.triggerState('OPEN')
                 return this
@@ -94,6 +99,7 @@ define(function (require, exports) {
             close: function() {
                 //console.log('panel close')
                 this.triggerState('CLOSE')
+                //摧毁
                 if (this._opts.closeToDispose) {
                     this._unBindEvent()
                     this.$target.remove()
