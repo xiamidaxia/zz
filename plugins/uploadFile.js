@@ -8,8 +8,7 @@ define(function(require,exports) {
     "use strict"
     var $ = require('jquery')
 
-    var tpl = '<form action="{{action}}" method="post" enctype="multipart/form-data"><input type="file" class="none" {{attr}}/></form>'
-
+    var tpl = '<form action="{{action}}" method="post" enctype="multipart/form-data"><input type="file" name="file" class="none" {{attr}} /></form>'
 
     $.fn.extend({
         /**
@@ -21,6 +20,7 @@ define(function(require,exports) {
          *      success: {Function}
          *      error: {Function}
          *      attr: {String || Ignore}  "multiple ..."
+         *      isPrevent: {Boolean} 是否阻止提交到服务器，用于nodewebkit不提交上传
          *    }
          */
         uploadFile: function (opts) {
@@ -32,8 +32,11 @@ define(function(require,exports) {
             $form.find(":file").change(function(e){
                 //change回调
                 opts.change.call(that, $(this).val())
+                //阻止提交
+                if (opts.isPrevent) return
                 //提交
                 if (window.FormData) {
+                    //formDataUpload($form, opts.success)
                     formDataUpload($form, opts.success)
                     $form.remove() //移除
                 } else {
@@ -64,7 +67,7 @@ define(function(require,exports) {
             processData: false,
             contentType: false,
             data: formData,
-            context: $form,
+            //context: $form,
             success: function(data){
                 data = JSON.parse(data) //todo
                 cb(data)
@@ -76,7 +79,7 @@ define(function(require,exports) {
     /**
      * iframe 异步提交
       */
-    function iframeUpload($target, cb, context) {
+    function iframeUpload($target, cb) {
         var iframeName = "iframe-" + $.now()
           , $iframe
         //创建iframe
