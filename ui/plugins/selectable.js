@@ -7,6 +7,7 @@
  * @update by liuwencheng on 2013-7-17
  *      修复pageY，pageX 为 pageY, pageX
  *      添加ignoreClass
+ * @update by liuwencheng on 2013-9-12  添加scopeElem
  *
  *  Thanks to jquery ui
  */
@@ -24,9 +25,11 @@ define(function(require,exports) {
     var Selectable =  Class(Effect)
         .attr({
             DEFAULT_OPTS: {
-                seleClass: 'ui-selected',   //子元素被选择时候加的类
+                addClass: 'ui-selected',   //子元素被选择时候加的类
+                seleClass: '',              //子元素需要包含的类
                 ignoreClass: '',            //若子元素包含该类 则被排除选中
                 startFn: $.noop,
+                scopeElem: null,            //要选择元素的父节点
                 endFn: $.noop,
                 stepFn: $.noop,
                 isCancel: false             //是否暂时取消选择框
@@ -82,7 +85,8 @@ define(function(require,exports) {
                         opts.stepFn && opts.stepFn.call(that,e,opts)
                         e.preventDefault() //ie上bug
                     },'mouseup.select':function(e) {
-                        $target.children().removeClass(that._opts.seleClass) //清除所有
+                        if (that._opts.scopeElem) $target = that._opts.scopeElem
+                        $target.children().removeClass(that._opts.addClass) //清除选中的选择框
                         opts.endFn && opts.endFn.call(that,e,opts) //回调
                         $(document).off('.select')
                         $seleBox.hide()
@@ -102,12 +106,14 @@ define(function(require,exports) {
             },
             /**
              *  选择target的被选择器包围的子类节点
+             *  修改：若指定scopeElem将在该元素中选择 update by liuwencheng 2013-9-12
               */
             _seleChildren: function() {
                 var $seleBox = this.$seleBox
                 var that = this
+                var $target = this._opts.scopeElem || this.$target
                 this.$seleArr.length = 0   //清空
-                this.$target.children().each(function(){
+                $target.children("." + this._opts.seleClass).each(function(){
                     var $this = $(this)
                     if($this.is($seleBox)) return
                     if($this.hasClass(that._opts.ignoreClass)) return
@@ -121,11 +127,11 @@ define(function(require,exports) {
                     if(min.left < tMax.left && min.top < tMax.top &&
                        //拖动点超过目标的原点
                        max.left > tMin.left && max.top > tMin.top) {
-                       $this.addClass(that._opts.seleClass)
+                       $this.addClass(that._opts.addClass)
                        that.$seleArr.push($this) //添加到选择中
                     }
                     else {
-                        $this.removeClass(that._opts.seleClass)
+                        $this.removeClass(that._opts.addClass)
                     }
 
                 })
