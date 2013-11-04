@@ -10,8 +10,8 @@ define(function(require) {
 	var $ = require('jquery')
 	    ,sys = require('zz/utils/utils').sys
     var eventType
-    if($.browser.msie && $.browser.version<9) {
     //if (sys.IE6 || sys.IE7 || sys.IE8) {
+    if (sys.LowIE) {
         eventType = 'propertychange'
     }else {
         eventType = 'input'
@@ -20,15 +20,30 @@ define(function(require) {
 	$.fn.extend({
 		onInput: function() {
 		    var args = Array.prototype.slice.call(arguments)
+            this.data('_setInputArgs', args.slice())
 		    args.unshift(eventType)
-            $(this).on.apply(this,args)
-            return this
+            return this.on.apply(this,args)
 		},
 		unInput: function() {
             var args = Array.prototype.slice.call(arguments)
             args.unshift(eventType)
+            this.removeData('_setInputArgs')
 		    return this.off.apply(this,args)
-		    return this
+        },
+        /**
+         * 在监听input事件的情况下动态改变其值，防止在低版本IE浏览器下循环触发
+         */
+        setInputVal: function(val){
+            if (sys.LowIE && this.data('_setInputArgs')) {
+                var data = this.data('_setInputArgs')
+                var that = this.unInput()
+                setTimeout(function() {
+                    that.val(val)
+                    that.onInput.apply(that, data)
+                }, 0)
+            } else {
+                this.val(val)
+            }
         }
 	});
 });

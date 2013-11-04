@@ -1,7 +1,7 @@
 /**
 *
 *  Javascript color conversion
-*  http://www.webtoolkit.info/
+*  thanks http://www.webtoolkit.info/
 *
  * @author by liuwencheng
  * @date 2013-6-1

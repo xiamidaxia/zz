@@ -1,5 +1,4 @@
 <div style="background: none repeat scroll 0% 0% rgb(255, 255, 255);" class="ui-color2-item" ></div>
-<div style="background: none repeat scroll 0% 0% rgb(255, 255, 255);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(235, 235, 235);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(214, 214, 214);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(192, 192, 192);" class="ui-color2-item" ></div>
@@ -9,6 +8,7 @@
 <div style="background: none repeat scroll 0% 0% rgb(95, 95, 95);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(66, 66, 66);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(34, 34, 34);" class="ui-color2-item" ></div>
+<div style="background: none repeat scroll 0% 0% rgb(0, 0, 0);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(0, 0, 0);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(0, 54, 74);" class="ui-color2-item" ></div>
 <div style="background: none repeat scroll 0% 0% rgb(22, 34, 85);" class="ui-color2-item" ></div>

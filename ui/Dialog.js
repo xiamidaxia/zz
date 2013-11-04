@@ -27,8 +27,8 @@ define(function (require, exports) {
             DEFAULT_OPTS: {
                 innerHTML: "",
                 footHTML: "",
-                titleHTML: "",
-                className: "",
+                titleHTML: "",                  //title部分内容
+                className: "",                  //样式名字，可以多个，如 "class1 class2 class3"
                 append: null,                   //jquery对象, 添加到对话框body上
                 appendTo: document.body,        //要添加到的父类对象
                 title: "对话框",
@@ -40,17 +40,20 @@ define(function (require, exports) {
                 height: 'auto',
                 bodyWidth: 'auto',              //针对内部ui-dialog-body
                 bodyHeight: 'auto',
+                left: null,                     //isCenter为false时可用
+                top: null,                      //isCenter为false时可用
+                isCenter: true,                 //是否居中
                 isAnim: true,
                 animTime: 300,
-                animType: '',//'easeOutCubic',
+                animType: '',                   //'easeOutCubic',
                 zIndex: 100000,
                 maskZindex: 10000,
                 blankToClose: false,            //点击空白地方是否关闭
                 closeToDispose: true,           //关闭时候是否销毁
-                maskOpacity : 0.3,
+                maskOpacity : 0.7,
                 actions: {                      //actionMap, 默认有close
-                    'close': function(){        //注：重新制定actions若没有close，默认的close不会被覆盖，若有close将覆盖默认
-                        this.close()
+                    'close': function(e){        //注：重新制定actions若没有close，默认的close不会被覆盖，若有close将覆盖默认
+                        this.close()            //这里的this只想dialog本身，若要获取触发节点，请使用e.currentTarget
                     }
                 },
                 footBtns: {"close":"关闭"}                //例：{"close":"关闭","submit":"提交"} 和actions对应
@@ -117,18 +120,26 @@ define(function (require, exports) {
                 this._mask && this._mask.open()
                 this.$target
                     .appendTo(this._opts.appendTo)
-                    .css({
-                        //使得居中
-                        marginLeft: -this.$target.width()/2,
-                        marginTop: -this.$target.height()/2
+                /** 是否居中 **/
+                if (this._opts.isCenter) {
+                    this.$target.css({
+                            //使得居中
+                            marginLeft: -this.$target.width()/2,
+                            marginTop: -this.$target.height()/2
                     })
+                } else {
+                    this.$target.css({
+                        left: this._opts.left || 0,
+                        top: this._opts.top || 0
+                    })
+                }
                 //动画
                 if(this._opts.isAnim) {
                     this.$target
                         .css('top', -this.$target.height())
                         .show()
                         .animate({
-                            'top': '50%'
+                            'top': this._opts.isCenter ? '50%' : (this._opts.top || 0)
                         }
                         ,this._opts.animTime
                         ,this._opts.animType
@@ -137,7 +148,7 @@ define(function (require, exports) {
                             this.triggerState('OPEN')
                         }).bind(this))
                 } else {
-                    this.$target.appendTo(this._opts.appendTo)
+                    this.$target.show()
                     this._bindEvent()
                     this.triggerState('OPEN')
                 }

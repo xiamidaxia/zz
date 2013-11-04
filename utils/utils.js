@@ -35,6 +35,22 @@ define(function(require,exports) {
         return arrDPI[0]; //只计算宽dpi
     }
     /**
+     * 像素转毫米
+     * @param {Number}
+     * @param {Number || Ignore} 指定dpi
+     */
+    exports.pxToMM = function(num, dpi){
+        return num / ( (dpi || exports.getDPI()) / 25.4 )
+    }
+    /**
+     * 像素转毫米
+     * @param {Number}
+     * @param {Number || Ignore} 指定dpi
+     */
+    exports.mmToPX = function(num, dpi){
+        return num / (25.4 / (dpi || exports.getDPI()))
+    }
+    /**
      * 判断浏览器
       */
     exports.sys = (function (ua) {
@@ -45,12 +61,33 @@ define(function(require,exports) {
         s.IE6 = (s.IE && ([/MSIE (\d)\.0/i.exec(navigator.userAgent)][0][1] == 6)) ? true : false;
         s.IE7 = (s.IE && ([/MSIE (\d)\.0/i.exec(navigator.userAgent)][0][1] == 7)) ? true : false;
         s.IE8 = (s.IE && ([/MSIE (\d)\.0/i.exec(navigator.userAgent)][0][1] == 8)) ? true : false;
-        return s;
+        s.LowIE = s.IE6 || s.IE7 || s.IE8;
+        return s
     })(navigator.userAgent.toLowerCase());
     /**
      *
      */
     exports.pxToInt = function(any){
         return parseInt(any || 0)
+    }
+    /**
+     * 图片高宽适应父类高宽
+     * @param {Number}
+     * @param {Number}
+     * @param {Number}
+     * @param {Number}
+     * @return {Array} [newWidth, newHeight,ratio] ratio为与原尺寸的比例
+     */
+    exports.ratioImg = function(imgWidth, imgHeight, parentWidth, parentHeight){
+        var ratioX = parentWidth / imgWidth
+        var ratioY = parentHeight / imgHeight
+        var ratio =  (ratioX < ratioY) ? ratioX : ratioY
+        /** 如果超过父类高宽 **/
+        if (ratio < 1) {
+            return [imgWidth * ratio, imgHeight * ratio, ratio]
+        /** 如果不超过返回原图 **/
+        } else {
+            return [imgWidth, imgHeight, 1]
+        }
     }
 })

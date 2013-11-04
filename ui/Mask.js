@@ -14,11 +14,15 @@ define(function (require, exports) {
         .attr({
             DEFAULT_OPTS: {
                 color:'#000',
-                opacity : 0.3,
+                opacity : 0.7,
                 zIndex : 10000,
                 isAnim : true,
                 animTime: 200,
-                closeToDispose: true
+                closeToDispose: true,
+                width: "autoSize",    //指定宽, 若指定为autoSize将自适应$(document).width()
+                height: "autoSize",   //同上
+                left: 0,
+                top: 0
             }
         })
         .init(function (opts) {
@@ -31,12 +35,12 @@ define(function (require, exports) {
                 $target = this.$target = $('<div class="ui-mask"></div>')
                 //$target.appendTo(document.body)
                 $target.css({
-                    width: $(document).width(),
-                    height: $(document).height(),
+                    width: (this._opts.width === "autoSize") ?  $(document).width() : this._opts.width,
+                    height: (this._opts.height === "autoSize") ? $(document).height() : this._opts.height,
                     position: 'fixed',
                     overflow: 'hidden',
-                    left: 0,
-                    top:0,
+                    left: this._opts.left,
+                    top: this._opts.top,
                     backgroundColor: this._opts.color,
                     zIndex: this._opts.zIndex,
                     opacity: this._opts.opacity
@@ -91,20 +95,21 @@ define(function (require, exports) {
                 return this
             },
             _bindEvent: function() {
-                if(!this._resizeFunc) {
-                    this._resizeFunc = (function() {
-                        this.$target
-                            .width($(document).width())
-                            .height($(document).height())
-                    }).bind(this)
+                var that = this
+                var resizeFunc = function(){
+                    if (that._opts.width === "autoSize") {
+                        that.$target.width($(document).width() - that._opts.left)
+                    }
+                    if (that._opts.height === "autoSize")  {
+                        that.$target.height($(document).height() - that._opts.top)
+                    }
                 }
-                $(window).on('resize.mask', this._resizeFunc)
-                //todo 阻止滚动
+                $(window).on('resize.mask' + this.getID(), resizeFunc)
                 return this
             },
             _unBindEvent:function() {
-                $(window).off('resize.mask')
-                this.$target.off('scroll.mask')
+                $(window).off('resize.mask' + this.getID()) //关闭当前的mask
+                //this.$target.off('scroll.mask')
                 return this
             }
         })

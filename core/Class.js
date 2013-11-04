@@ -276,7 +276,7 @@ define(function(require, exports){
         var stateMap
             ,triggerArr
         //转换
-        assertType(arguments,["String","Function","Object || Ignore"])
+        //assertType(arguments,["String","Function","Object || Ignore"])
         stateName = PRE_STATE + stateName
         assert(this[stateName] !== undefined,"要监听的状态名"+stateName+"不存在!!")
         stateName = this[stateName][0] //状态名字转换
@@ -412,7 +412,8 @@ define(function(require, exports){
      */
     Class.defState = function() {
         var proto = this.prototype
-        forEach(arguments,function(item){
+        var args = [].slice.apply(arguments)
+        args.forEach(function(item){
             assert(types.isString(item),"状态必须是字符串！！")
             item = PRE_STATE + item
             assert(ATTR_STATE_REG.test(item),"状态名"+item+"只能是大写字母或下划线!!")
@@ -559,7 +560,7 @@ define(function(require, exports){
             ,m2 = -1
         //获取toggleOnce数组
         toggleArr = this.__toggleOnceArr__ || (this.__toggleOnceArr__ = [])
-        assertType(arguments,['String','String || Function || Ignore', 'Function || Ignore'])
+        //assertType(arguments,['String','String || Function || Ignore', 'Function || Ignore'])
         assert(proto.hasOwnProperty(method1),'类未实现'+method1+'方法')
         //处理参数
         if (types.isFunction(method2)) {

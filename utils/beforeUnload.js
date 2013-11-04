@@ -5,9 +5,13 @@
  *
  */
 define(function(require, exports){
+    var sys = require('zz/utils/utils').sys
     exports.bind = function(msg){
-        window.onbeforeunload = function(){
+        if (sys.IE) return
+        window.onbeforeunload = function(e){
             return msg || "内容还未保存!"
+            e.preventDefault()
+            e.stopPropagation()
         }
     }
 

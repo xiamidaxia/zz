@@ -13,13 +13,14 @@ define(function(require,exports) {
             "hasTitle": false,
             "hasClose": false,
             "hasFoot": false,
-            "hasMask": false,
-            "innerHTML": "<p class='ui-info-msg'><i></i>"+msg+"</p>",
+            "hasMask": true,
+            "innerHTML": "<p class='ui-info-msg' style='padding: 30px 50px;font-size:16px;'><i></i>"+msg+"</p>",
             "className": "ui-info",
             isAnim: false
         })
         infoDlg.open()
         type = type || "success" //todo
         setTimeout(function(){infoDlg.close()}, duration || SHOW_TIME)
+        return infoDlg;
     }
 })

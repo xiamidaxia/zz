@@ -2,14 +2,15 @@
  *
  * 可视面板
  *
- * @version 0.1.2
+ * @version 0.1.3
  *
  * @author by liuwencheng
  * @date 2013-6-21
  *
  * @update 0.1.2 增加actions
+ * @update 0.1.3 添加getID方法
  */
-define(function (require, exports) {
+define(function (require) {
     "use strict"
     require('jquery.tmpl')
     require('zz/plugins/actionMap')
@@ -18,6 +19,7 @@ define(function (require, exports) {
     var Class = require('zz/core/Class')
     var $ = require('jquery')
 
+    var _COUNT = 0 //计数器
     var Panel = Class()
         .defState('CLOSE','OPEN','DISPOSE','CREATE')
         //静态属性
@@ -32,7 +34,8 @@ define(function (require, exports) {
                     'close': function(){
                         this.close()
                     }
-                }
+                },
+                css: null                       //设置样式
             },   //默认操作
             TMPL: "<div id='${id}' class='ui-panel ${className}'>${innerHTML}</div>"            //模版
         })
@@ -47,6 +50,8 @@ define(function (require, exports) {
                             ,opts.actions)
             }
             this.$target = null                               //dom对象
+            _COUNT++
+            this._id = _COUNT     //用于保证唯一性
         })
         .method({
             _create: function() {
@@ -55,6 +60,7 @@ define(function (require, exports) {
                 if(this._opts.append) {
                     this.$target.append(this._opts.append)
                 }
+                this._opts.css && this.$target.css(this._opts.css)
                 this.triggerState('CREATE')
                 return this
             },
@@ -62,7 +68,7 @@ define(function (require, exports) {
                 var that = this
                 //注册点击空白关闭事件
                 if(this._opts.blankToClose) {
-                    $(document.body).on('click.panel', function(){
+                    $(document.body).on('click.panel' + this.getID(), function(){
                         that.close()
                     })
                     this.$target.on('click.panel',function(e){
@@ -77,7 +83,7 @@ define(function (require, exports) {
             _unBindEvent: function() {
                 //取消点击空白关闭事件
                 if(this._opts.blankToClose) {
-                    $(document.body).off('click.panel')
+                    $(document.body).off('click.panel' + this.getID())
                     this.$target.off('click.panel')
                 }
                 //取消actionMap
@@ -129,9 +135,17 @@ define(function (require, exports) {
             },
             getTarget: function() {
                 return this.$target
+            },
+            getID: function(){
+                if (!this._id) {
+                    _COUNT++
+                    this._id = _COUNT     //用于保证唯一性
+                }
+                return this._id
             }
         })
         //.order('_create','open','close','_bindEvent','_unBindEvent')
+        //.toggleOnce('_create')
         .toggleOnce('open','close')
         /**
         ,function(errorState){

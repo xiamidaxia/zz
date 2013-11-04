@@ -33,7 +33,7 @@ define(function (require, exports) {
                 var that = this
                 //配置
                 target.addClass('ui-rotatable')
-                target.append('<div class="ui-rotable-box">'+
+                target.append('<div class="ui-rotable-box none">'+
                     '<div class="ui-rotable-handler" title="按住拖动旋转">'+
                     '</div><div class="ui-rotable-line"></div></div>')
 

@@ -69,7 +69,7 @@ define(function(require,exports) {
             data: formData,
             //context: $form,
             success: function(data){
-                data = JSON.parse(data) //todo
+                //data = JSON.parse(data) //todo
                 cb(data)
             }
             //error: opts.error //mark
@@ -84,7 +84,7 @@ define(function(require,exports) {
           , $iframe
         //创建iframe
         $iframe = $('<iframe id="NAME" name="NAME" style="display:none">'.replace(/NAME/g,iframeName)).appendTo(document.body)
-        //context || $iframe.attr('src','javascript:document.open();document.domain="zhubajie.com";document.close();') //document.domain=""; //mark
+        $iframe.attr('src','javascript:document.open();document.domain="zhubajie.com";document.close();') //document.domain=""; //mark
         //提交成功后回调
         $iframe.on('load', function(){
             var data = $iframe[0].contentWindow.document.body.innerHTML.trim()
@@ -99,6 +99,7 @@ define(function(require,exports) {
             })
         })
         //提交
-        $target.attr('target', iframeName).submit()
+        $target.attr('target', iframeName)
+        $target.submit()
     }
 })

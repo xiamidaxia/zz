@@ -17,6 +17,7 @@
  *
  *  0.01: 实现基本拖拽 draggable,unDraggable,trigerDrag
  *  0.2: 继承自"zz/ui/base/Effect" 实现类 @update 2013-6-13
+ *  0.3: add Opts: noMoveX, noMoveY,dragScopeX,dragScopeY
  *
  *  Thanks to jquery ui
  */
@@ -37,21 +38,26 @@ define(function(require,exports) {
                 appendTo: document.body,    //copy的dragTarget放置的目标, 默认放置到body
                 dragTarget: "self",         //"clone" , 或者返回自己创建的节点, 参照jquery-ui-draggable.helper
                 cursor: "move",
+                dragScopeX: [],             //[-4, 9] 水平移动相对于最原始的最小和最大范围，若是指定dragScopeX或者dragScopeY，dragScope和addTargetScope将不起作用
+                dragScopeY: [],             //同上
                 dragScope: "window",        //parent, window, dom-id
-                addTargetScope: true,       //判定dragScope计算的时候是否扩充taget的宽和高,
+                addTargetScope: false,       //判定dragScope计算的时候是否扩充taget的宽和高,
                 grid: 0,
                 cursorAt: null,              //[3,3]
                 snapLen: 5,                  //吸附宽度
                 snapAppendTo: document.body,       //吸附线存放处
                 startFn: $.noop,
                 endFn: $.noop,
-                stepFn: $.noop
+                stepFn: $.noop,
+                noMoveX: false,                 //不移动x轴
+                noMoveY: false                  //不移动y轴
             },
             TYPE: 'draggable'
         })
         .init(function(target, opts){
             this.superInit(target, opts)
             this.$dragTarget = this.$target     //被拖动的目标
+            this.originPosition = this.$dragTarget.position() //未拖拽前的原始位置
             this.dragLen =[0,0]     //拖动距离, 第一个为left, 第二个top
         })
         .method({
@@ -176,11 +182,6 @@ define(function(require,exports) {
                     maxX = maxX + tWidth
                     maxY = maxY + tHeight
                 }
-                //限制位置
-                offsetX = (minX < offsetX) ? offsetX : minX
-                offsetY = (minY < offsetY) ? offsetY : minY
-                offsetX = (maxX > offsetX) ? offsetX : maxX
-                offsetY = (maxY > offsetY) ? offsetY : maxY
 
                 //吸附
                 if(opts.snapArr) {
@@ -191,10 +192,36 @@ define(function(require,exports) {
                     offsetY = this.getSnapNum(offsetY, "y")
                 }
 
-                target.offset({
-                    left: math.getGridNum(offsetX,grid),
-                    top:  math.getGridNum(offsetY,grid)
-                })
+                //设定x轴指定范围
+                var parentOffset = target.offsetParent().offset()
+                if (opts.dragScopeX.length !== 0) {
+                    minX = parentOffset.left + this.originPosition.left + opts.dragScopeX[0]
+                    maxX = parentOffset.left + this.originPosition.left + opts.dragScopeX[1]
+                }
+                //设定y轴指定范围
+                if (opts.dragScopeY.length !== 0) {
+                    minY = parentOffset.left + this.originPosition.top + opts.dragScopeY[0]
+                    maxY = parentOffset.left + this.originPosition.top + opts.dragScopeY[1]
+                }
+
+                //限制位置
+                offsetX = (minX < offsetX) ? offsetX : minX
+                offsetY = (minY < offsetY) ? offsetY : minY
+                offsetX = (maxX > offsetX) ? offsetX : maxX
+                offsetY = (maxY > offsetY) ? offsetY : maxY
+
+                //设置x轴平移
+                if (!opts.noMoveX) {
+                    target.offset({
+                        left: math.getGridNum(offsetX,grid)
+                    })
+                }
+                //设置y轴平移
+                if (!opts.noMoveY) {
+                    target.offset({
+                        top:  math.getGridNum(offsetY,grid)
+                    })
+                }
             },
             getSnapNum: function(num, type) {
                 var snapArr = this._opts.snapArr[0]
