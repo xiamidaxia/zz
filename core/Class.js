@@ -412,14 +412,15 @@ define(function(require, exports){
      */
     Class.defState = function() {
         var proto = this.prototype
-        var args = [].slice.apply(arguments)
-        args.forEach(function(item){
+        var item
+        for (var i = 0 , len = arguments.length; i!=len; i++) {
+            item = arguments[i]
             assert(types.isString(item),"状态必须是字符串！！")
             item = PRE_STATE + item
             assert(ATTR_STATE_REG.test(item),"状态名"+item+"只能是大写字母或下划线!!")
             assert(proto[item] === undefined,"状态"+item+"已经被定义了！！")
             proto[item] = [item] //保证每个状态唯一,并在数组中储存下状态名字,便于触发调用
-        })
+        }
         return this
     }
     /**

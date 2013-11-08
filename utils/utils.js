@@ -39,7 +39,7 @@ define(function(require,exports) {
      * @param {Number}
      * @param {Number || Ignore} 指定dpi
      */
-    exports.pxToMM = function(num, dpi){
+    exports.px2mm = function(num, dpi){
         return num / ( (dpi || exports.getDPI()) / 25.4 )
     }
     /**
@@ -47,7 +47,7 @@ define(function(require,exports) {
      * @param {Number}
      * @param {Number || Ignore} 指定dpi
      */
-    exports.mmToPX = function(num, dpi){
+    exports.mm2px = function(num, dpi){
         return num / (25.4 / (dpi || exports.getDPI()))
     }
     /**
