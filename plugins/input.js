@@ -8,10 +8,11 @@
 
 define(function(require) {
 	var $ = require('jquery')
-	    ,sys = require('zz/utils/utils').sys
     var eventType
     //if (sys.IE6 || sys.IE7 || sys.IE8) {
-    if (sys.LowIE) {
+    //if (sys.LowIE) {
+    var isLowIE = ($.browser.msie && $.browser.version <= 8) ? true : false
+    if (isLowIE) {
         eventType = 'propertychange'
     }else {
         eventType = 'input'
@@ -34,7 +35,7 @@ define(function(require) {
          * 在监听input事件的情况下动态改变其值，防止在低版本IE浏览器下循环触发
          */
         setInputVal: function(val){
-            if (sys.LowIE && this.data('_setInputArgs')) {
+            if (isLowIE && this.data('_setInputArgs')) {
                 var data = this.data('_setInputArgs')
                 var that = this.unInput()
                 setTimeout(function() {

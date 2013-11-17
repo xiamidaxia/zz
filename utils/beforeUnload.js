@@ -5,9 +5,8 @@
  *
  */
 define(function(require, exports){
-    var sys = require('zz/utils/utils').sys
     exports.bind = function(msg){
-        if (sys.IE) return
+        if (require('jquery').browser.msie) return
         window.onbeforeunload = function(e){
             return msg || "内容还未保存!"
             e.preventDefault()

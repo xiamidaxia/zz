@@ -53,7 +53,7 @@ define(function(require,exports) {
     /**
      * 判断浏览器
       */
-    exports.sys = (function (ua) {
+/*    exports.sys = (function (ua) {
         var s = {};
         s.IE = ua.match(/msie ([\d.]+)/) ? true : false;
         s.Firefox = ua.match(/firefox\/([\d.]+)/) ? true : false;
@@ -63,7 +63,7 @@ define(function(require,exports) {
         s.IE8 = (s.IE && ([/MSIE (\d)\.0/i.exec(navigator.userAgent)][0][1] == 8)) ? true : false;
         s.LowIE = s.IE6 || s.IE7 || s.IE8;
         return s
-    })(navigator.userAgent.toLowerCase());
+    })(navigator.userAgent.toLowerCase());*/
     /**
      *
      */

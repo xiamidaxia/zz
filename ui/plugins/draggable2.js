@@ -41,10 +41,11 @@ define(function(require,exports) {
                 dragScopeX: [],             //[-4, 9] 水平移动相对于最原始的最小和最大范围，若是指定dragScopeX或者dragScopeY，dragScope和addTargetScope将不起作用
                 dragScopeY: [],             //同上
                 dragScope: "window",        //parent, window, dom-id
-                addTargetScope: false,       //判定dragScope计算的时候是否扩充taget的宽和高,
+                addTargetScope: true,       //判定dragScope计算的时候是否扩充taget的宽和高,
                 grid: 0,
                 cursorAt: null,              //[3,3]
                 snapLen: 5,                  //吸附宽度
+                snapArr: null,
                 snapAppendTo: document.body,       //吸附线存放处
                 startFn: $.noop,
                 endFn: $.noop,

@@ -15,7 +15,7 @@ define(function(require,exports) {
             DEFAULT_OPTS: {
                 changeFn: function(rangeVal){}, //rangeVal为所移动的值
                 css: {},         //设置css
-                stepLen: 3,       //点击放大缩小按钮缩放大小
+                stepLen: 5,       //点击放大缩小按钮缩放大小
                 scope: [0,100],     //移动范围
                 action: {
                     "smaller": function(){console.log('smaller')}
