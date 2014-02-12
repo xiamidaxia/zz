@@ -8,14 +8,14 @@ define(function(require,exports) {
     var Dialog = require('./Dialog')
     //var alertTmpl = '<div class=\'ui-tipbox ui-tipbox-warning\'>\n    <div class=\'ui-tipbox-icon\'>\n        <i class="iconfont" title="警告"></i>\n    </div>\n    <div class=\'ui-tipbox-content\'>\n        <p class=\'ui-tipbox-explain\'>{{msg}}</p>\n    </div>\n</div>'
 
-    return function (msg, fn){
+    return function (msg, fn, btnName){
         var alertDlg = new Dialog({
             "hasTitle": false,
             "hasClose": false,
             "innerHTML": "<p class='ui-alert-msg'>"+msg+"</p>",
             "className": "ui-alert",
             "footBtns": {
-                "close": "确定"
+                "close": btnName || "确定"
             },
             actions: {
                 close: function(){

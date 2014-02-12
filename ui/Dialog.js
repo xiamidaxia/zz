@@ -10,7 +10,7 @@
  *      增加bodyWidth, bodyHeight, 增加actions
  *      处理actions到Panel
  */
-define(function (require, exports) {
+define(function (require, exports, module) {
     "use strict"
     require('jquery.tmpl')
     require('jquery.easing')

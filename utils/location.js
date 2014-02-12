@@ -10,7 +10,7 @@
  *      onchange: function() {} //change回调
  *  });
  */
-
+define(function(){
 function LocationChain(args) {
     this.$province = args.province || $();
     this.$city = args.city || $();
@@ -1223,3 +1223,5 @@ function getLocValue(pro) {
     });
     return rst;
 }
+
+})

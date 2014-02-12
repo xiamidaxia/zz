@@ -11,7 +11,8 @@ define(function(require) {
     var eventType
     //if (sys.IE6 || sys.IE7 || sys.IE8) {
     //if (sys.LowIE) {
-    var isLowIE = ($.browser.msie && $.browser.version <= 8) ? true : false
+        
+    var isLowIE = (/\bMSIE [67]\.0\b/.test(navigator.userAgent)) ? true : false
     if (isLowIE) {
         eventType = 'propertychange'
     }else {

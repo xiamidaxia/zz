@@ -319,10 +319,8 @@ define(function(require, exports){
         var stateArr
             ,_arguments = arguments
         stateName = PRE_STATE + stateName
-        if (this.__stateMap__) {
-            assert(this[stateName] !== undefined,"要监听的状态名"+stateName+"不存在!!")
+        if (this.__stateMap__ && this[stateName]) {
             stateName = this[stateName][0] //状态名字转换
-            //assert(this.__stateMap__[stateName] !== undefined,"监听的状态"+stateName+"没有相应事件!!")
             stateArr = this.__stateMap__[stateName] || []
             if (_arguments.length > 1)  {
                 stateArr.forEach(function(item,key){
