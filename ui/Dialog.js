@@ -133,6 +133,26 @@ define(function (require, exports, module) {
                         top: this._opts.top || 0
                     })
                 }
+
+                function getIframeDialogPosition(dlg){
+                    var scrollTop, parentHeight, dialogHeight, frameTop, ret;
+                    try{
+                        scrollTop = $(parent.document.body).scrollTop();
+                        parentHeight = $(parent.window).height();
+                        dialogHeight = dlg.$target.height();
+                        frameTop = $(window.frameElement).offset().top;
+
+                        ret = scrollTop+parentHeight/2-dialogHeight/2-frameTop;
+                        return ret<0 ? 0 : ret;
+                    }catch(e){
+                        return 100;
+                    }
+                }
+                // iframe 修正
+                if(/[?&]iframe=1/.test(location.href)){
+                    this.$target.css({marginTop: 0, top: getIframeDialogPosition(this)});
+                    this._opts.isAnim = false;
+                }
                 //动画
                 if(this._opts.isAnim) {
                     this.$target

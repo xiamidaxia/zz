@@ -16,7 +16,7 @@ define(function (require, exports) {
                 color:'#000',
                 opacity : 0.7,
                 zIndex : 10000,
-                isAnim : true,
+                isAnim : false,
                 animTime: 200,
                 closeToDispose: true,
                 width: "autoSize",    //指定宽, 若指定为autoSize将自适应$(document).width()

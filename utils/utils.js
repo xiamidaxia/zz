@@ -10,7 +10,7 @@ define(function(require,exports) {
      * 获取url问号后边的变量相对应的值
      */
     exports.getUrlData = function(val){
-        var reg = new RegExp("(^|&)"+val+"=([^&]*)(&|$)");
+        var reg = new RegExp("(^|&)"+val.toLowerCase()+"=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
         return r!=null ? decodeURI(r[2]) : '';
     }
@@ -37,7 +37,7 @@ define(function(require,exports) {
     /**
      * 像素转毫米
      * @param {Number}
-     * @param {Number || Ignore} 指定dpi
+     * @param {Number | Ignore} 指定dpi
      */
     exports.px2mm = function(num, dpi){
         return num / ( (dpi || exports.getDPI()) / 25.4 )
@@ -45,7 +45,7 @@ define(function(require,exports) {
     /**
      * 像素转毫米
      * @param {Number}
-     * @param {Number || Ignore} 指定dpi
+     * @param {Number | Ignore} 指定dpi
      */
     exports.mm2px = function(num, dpi){
         return num / (25.4 / (dpi || exports.getDPI()))

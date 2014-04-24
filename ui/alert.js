@@ -27,5 +27,6 @@ define(function(require,exports) {
             isAnim: false
         })
         alertDlg.open()
+        return alertDlg
     }
 })
