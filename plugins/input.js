@@ -76,9 +76,11 @@ define(function(require) {
                 var args = Array.prototype.slice.call(arguments)
                 if (_cur - _start > step) {
                     clearTimeout(_timeout)
+                    _timeout = null
                     fn.apply(self, args)
                     _start = _cur
                 } else {
+                    if (_timeout) clearTimeout(_timeout)
                     //过了step延迟时间如果用户一直没有输入则触发timeout
                     _timeout = setTimeout(function() {
                         fn.apply(self, args)
