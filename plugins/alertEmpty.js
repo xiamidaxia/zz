@@ -3,13 +3,13 @@
  *
  *
  *	var $ = require("jquery");
- *	require("srx/plugin/alertEmpty");
+ *	require("zz/plugin/alertEmpty");
  *	
  *	var $text = $("#textarea");
  *	var value = $text.val().trim();
  *
  *	if (value == ""|| value == $text.attr("placeholder")) {
- *	$("#textarea").alertEmpty();
+ *	    $("#textarea").alertEmpty();
  *	}
  *
  */
