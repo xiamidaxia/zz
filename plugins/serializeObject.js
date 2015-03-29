@@ -9,7 +9,14 @@
          var arr = this.serializeArray()
          var _checkboxItems = {}
          arr.forEach(function(item){
-             if (item.value.trim() !== "") {
+             item.value = item.value.trim()
+             if (item.value !== "") {
+
+                //加入类型
+                if ($.isNumeric(item.value)) {
+                   item.value = Number(item.value)
+                }
+
 
                 //为checkbox
                 if (_checkboxItems[item.name]) {
