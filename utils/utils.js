@@ -14,6 +14,16 @@ define(function(require,exports) {
         var r = window.location.search.substr(1).match(reg);
         return r!=null ? decodeURI(r[2]) : '';
     }
+    exports.getUrlDataAll = function() {
+        var data = {}
+        location.search.slice(1).split("&").forEach(function(item) {
+            item = item.split("=")
+            if (item[0] != null && item[1] != null) {
+                data[item[0]] = decodeURI(item[1])
+            }
+        })
+        return data
+    }
     /**
      * 获取屏幕dpi
      */
