@@ -79,20 +79,21 @@ define(function(require) {
             eventNames = keys.join(" ") || '[click]'
             eventNames = eventNames.substr(1,eventNames.length-2).split(/\s*,\s*/)
             eventNames.forEach(function(eventName) {
-                self.on(eventName, "[action="+actionName+"]", function(e) {
+                self.on(eventName, "[action=\""+actionName+"\"]", function(e) {
                     var parentData = $(e.delegateTarget).data()
                     var myData = $(e.currentTarget).data()
                     actionFn.call(this, e, t(e), $.extend({}, parentData, myData))
                 })
             })
         })
+        return this
     }
 })
 function t(e) {
     var $target = $(e.currentTarget)
     var name = $target.attr('t')
     var res
-    if (!name) throw new Error("can not find 'name' !!")
+    if (!name) return $target
     while (true) {
         if (e.delegateTarget === $target[0] || document.body === $target[0]) return []
         res = $target.parent().children('[n="' + name + '"]')
