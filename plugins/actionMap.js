@@ -45,6 +45,60 @@ define(function(require) {
 		    return this.off('click.actionMap')
         }
 	});
+	
+	
+	$.fn.extend({
+    /**
+     * <div id="wrap">
+     *  <p n='content'>内容</p>
+     *  <a action="delete" t="content">删除</a>
+     *  <a action="add" t="content">添加</a>
+     * </div>
+     * $("#wrap").actions({
+     *     "delete [tap, blur]": function(e, t, data){
+     *          t.remove()
+     *     },
+     *     //默认不加事件名称为tap
+     *     "add": function() {
+     *
+     *     }
+     * })
+     *
+     * */
+    actions: function(map) {
+        var self = this
+        if (!map) return
+        $.each(map, function(actionFn, originKey) {
+            var keys = originKey.split(/\s+/)
+            var actionName, eventNames
+            if (originKey[0] !== "[") {
+                actionName = keys[0]
+                keys.shift()
+            }
+            eventNames = keys.join(" ") || '[click]'
+            eventNames = eventNames.substr(1,eventNames.length-2).split(/\s*,\s*/)
+            eventNames.forEach(function(eventName) {
+                self.on(eventName, "[action="+actionName+"]", function(e) {
+                    var parentData = $(e.delegateTarget).data()
+                    var myData = $(e.currentTarget).data()
+                    actionFn.call(this, e, t(e), $.extend({}, parentData, myData))
+                })
+            })
+        })
+    }
+})
+function t(e) {
+    var $target = $(e.currentTarget)
+    var name = $target.attr('t')
+    var res
+    if (!name) throw new Error("can not find 'name' !!")
+    while (true) {
+        if (e.delegateTarget === $target[0] || document.body === $target[0]) return []
+        res = $target.parent().children('[n="' + name + '"]')
+        if (res.length !== 0) return res
+        $target = $target.parent()
+    }
+}
 });
 
 
