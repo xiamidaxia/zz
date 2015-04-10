@@ -68,7 +68,8 @@ define(function(require) {
     actions: function(map) {
         var self = this
         if (!map) return
-        $.each(map, function(actionFn, originKey) {
+        $.each(map, function(originKey) {
+            var actionFn = this
             var keys = originKey.split(/\s+/)
             var actionName, eventNames
             if (originKey[0] !== "[") {
